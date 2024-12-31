@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign-In</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <h1>
+        Sign In
+    </h1>
+    <p style="font-size: 1.5rem;">
+        Sign in to check out my game
+        <br/>
+    </p>
+    <div class="name-input-form-and-button" style="font-size: 1.5rem;">
+        <form id="name-form" method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <p >
+                Don't have an account? register <a href="/register">here</a>
+                <br/>
+            </p>
+            <button id="submit">Sign In</button>
+        </form>
+    <div>
+
+    
+</body>
+</html>

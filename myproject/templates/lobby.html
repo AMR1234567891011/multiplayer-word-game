@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplayer</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<div id="uSpace">
+    <div id="uSlot">
+        <h1 style='font-size:3rem;'>
+            You
+        </h1>
+        <div >
+        <div class='You'></div>
+        <div id="uName">
+            {% if user.is_authenticated %}
+            <p id="username">
+                {{ user.username }}
+            </p>
+            {% endif %}
+            <div id="serverStatus">
+            </div>
+        </div>
+            <form id="form">
+                <input type="text" name="message">
+                <button id="submit">Guess Word</button>
+            </form>
+    </div>
+</div>
+    <script>
+        let url = `ws://${window.location.host}/ws/lobby/asherLobby/`
+        console.log(url)
+        const username = document.getElementById('username').textContent.trim()
+        console.log(username) 
+        const socket = new WebSocket(url)
+        const users = new Set()
+        users.add(username)
+        let guessStore = {}
+        guessStore.username = new Set();
+
+        socket.onmessage = function(e){
+            let data = JSON.parse(e.data)
+            let userSpace = document.getElementById('uSpace')
+            switch(data.type){
+                case 'connection':
+                    document.getElementById('serverStatus').innerHTML = "<p>" + 'serverStatus: ' + data.message +"</p>"
+                    console.log(data)
+                    break;
+                case 'guess-validation':
+                    console.log(data.message)
+                    break;
+                case 'lobby-guess':
+                    console.log(data.message)
+                    if (data.user === username){
+                        if(!guessStore[data.user]){
+                            guessStore[data.user] = new Set();
+                        }
+                        if (!guessStore[data.user].has(data.message)){
+                            guessStore[data.user].add(data.message)
+                            let coloredGuess = '';
+                            for (let i = 0; i < 5; i++){
+                                coloredGuess += `<span style="color:${data['c' + (i + 1)]}">${data.message[i]}</span>`;
+                            }
+                            document.getElementsByClassName('You')[0].insertAdjacentHTML('beforeend', `<p style='font-size: 1.5rem;'> ${coloredGuess} </p>`)
+                        }
+                    }else{
+                        if(!guessStore[data.user]){
+                            guessStore[data.user] = new Set();
+                        }
+                        if (!guessStore[data.user].has(data.message)){
+                            guessStore[data.user].add(data.message)
+                            let coloredGuess = '';
+                            for (let i = 0; i < 5; i++){
+                                coloredGuess += `<span style="color:${data['c' + (i + 1)]}">${data.message[i]}</span>`;
+                            }
+                            document.getElementsByClassName(data.user)[0].insertAdjacentHTML('beforeend', `<p style='font-size: 1.5rem;'> ${coloredGuess} </p>`)
+                        }
+                    }
+                    console.log(`guess: ${data.message} c1: ${data.c1} c2: ${data.c2} c3: ${data.c3} c4: ${data.c4} c5: ${data.c5}`)
+                    break;
+                case 'lobby-management':
+                    console.log(data.message)
+                    if (data.event === 'new-connection' && !users.has(data.message)) {
+                        users.add(data.message)
+                        newUserHtml = `<div id=${"uSlot"} class=${data.message}><h1 style='font-size:3rem;'>${data.message}</h1>`
+                        userSpace.insertAdjacentHTML('beforeend', newUserHtml)
+                        guessStore[data.message] = new Set()
+                    }
+                    break;
+                case 'server-message':
+                    console.log(data.message)
+                default:
+                    console.log('invalid message type')
+                    break;
+            }
+
+        }
+
+        let form = document.getElementById('form')
+        form.addEventListener('submit', (e)=> {
+            e.preventDefault()
+
+            let message = e.target.message.value
+            socket.send(JSON.stringify({
+            'type':'guess-validation',
+            'message': message
+            }))
+            form.reset()
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', Courier, monospace;
+    min-height: 100vh;
+    display: flex; /* Use flexbox for layout */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    font-size: 3rem;
+    background-color: rgb(24, 23, 23);
+    color: whitesmoke;
+    padding: 20px; /* Add some padding around the edges */
+    text-align: center; /* Center text alignment by default */
+    flex-direction: column; /* Stack elements vertically */
+}
+
+/* Display Username */
+#uName {
+    position: absolute; /* Take it out of the normal flow */
+    top: 10px; /* Adjust distance from the top */
+    left: 10px; /* Adjust distance from the left */
+    text-align: left; /* Align text within the div */
+    font-size: 1.5rem; /* Adjust font size to fit the screen better */
+    width: 100%;
+    max-width: 100%;
+}
+#uSpace {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+#uSlot {
+    width: 100%;
+    align-items: left;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+/* Styling for Text Colors */
+.green {
+    color: green;
+}
+.yellow {
+    color: yellow;
+}
+.gray {
+    color: gray;
+}
+
+/* Typography */
+h1, p {
+    margin-bottom: 10px; /* Add some space below headings and paragraphs */
+}
+
+/* Form and Button Styling */
+.name-input-form-and-button {
+    display: flex; /* Use flexbox for horizontal layout of input and button */
+    align-items: center; /* Center items vertically in the form */
+    justify-content: center; /* Center items horizontally */
+}
+
+#name-form {
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Stack the form elements vertically */
+    align-items: center; /* Center items within the form */
+    font-size: 3rem;
+    background-color: rgb(24, 23, 23);
+    color: whitesmoke;
+    font-family: 'Courier New', Courier, monospace;
+    max-width: fit-content;
+    margin: auto; /* Center the form */
+}
+
+#submit {
+    width: 95%;
+    padding: 10px;
+    font-size: 3rem;
+    background-color: rgb(24, 23, 23);
+    color: whitesmoke;
+    font-family: 'Courier New', Courier, monospace;
+    border: 2px solid #ccc;
+    cursor: pointer; /* Make the button clickable */
+    margin-top: 10px; /* Add some space above the button */
+}
+
+/* Input Styling */
+input {
+    width: 95%;
+    padding: 10px;
+    font-size: 3rem;
+    background-color: rgb(24, 23, 23);
+    color: whitesmoke;
+    font-family: 'Courier New', Courier, monospace;
+    border: 2px solid #ccc;
+    text-align: center; /* Center text within the input */
+    margin-bottom: 10px; /* Add space below the input */
+}

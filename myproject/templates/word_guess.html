@@ -1,0 +1,61 @@
+<!--add_input.html-->
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>form</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+{% if user.is_authenticated %}
+    <div id="uName">
+        <p>
+            {{ user.username }}
+        </p>
+        <p>
+            Score: {{ score }}
+        </p>
+        <p>
+            Attempts: {{ tries }}
+        </p>
+    </div>
+{% endif %}
+<body>
+    <h1>
+        Wordel!
+    </h1>
+    <p>
+        {{ feedback }}
+    </p>
+    {% if user.is_authenticated %}
+        <div class="guesses">
+            {% for guess in guesses %}
+            <div class="guess">
+                <p>
+                    Guess {{ forloop.counter }}: 
+                    {% for letter in guess.letters.all %}
+                    <span class="{% if letter.color == 'g' %}green{% elif letter.color == 'y' %}yellow{% else %}gray{% endif %}">
+                        {{ letter.character }}
+                    </span>
+                    {% endfor %}
+                </p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="name-input-form-and-button">
+            <form id="name-form" method="POST">
+                {% csrf_token %}
+                {{ formIN.as_p }}
+                <button id="submit">Guess Word</button>
+            </form>
+        <div>
+    {% else %}
+        <p>
+            Looks like you aren't singed in :[
+        </p>
+        <a href="/login">Sign In</a>
+    {% endif %}
+</body>
+</html>
